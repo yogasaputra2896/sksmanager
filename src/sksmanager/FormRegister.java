@@ -4,51 +4,51 @@
  */
 package sksmanager;
 
-import java.awt.HeadlessException;
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 
-public class FormLogin extends javax.swing.JFrame {
+public class FormRegister extends javax.swing.JFrame {
 
-    Connection con;
-    Statement stmt;
-    ResultSet rs;
-
-    public FormLogin() {
+    private Connection con;
+    
+    public FormRegister() {
         initComponents();
-        con = Sksmanager.getConnection(); // Mengambil koneksi dari kelas SKSManager
-        if (con == null) {
-            JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(0); // Keluar jika koneksi gagal
-        }
+        con = Sksmanager.getConnection();
     }
 
-    private void login() {
+     private void register() {
         String nimm = tf_nim.getText().trim();
         String password = new String(tf_pass.getPassword()).trim();
+        String confirmPassword = new String(tf_confirmPass.getPassword()).trim();
 
-        if (nimm.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "NIM dan Password tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        // Validasi input
+        if (nimm.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua kolom harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Password dan konfirmasi password tidak cocok!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            stmt = con.createStatement();
-            // Query untuk mengecek apakah nim dan password cocok
-            String query = "SELECT * FROM users WHERE nim = '" + nimm + "' AND password = '" + password + "'";
-            rs = stmt.executeQuery(query);
-
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Login berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
-                // Tambahkan logika untuk membuka halaman berikutnya di sini
-                this.dispose(); // Menutup form login
+            String query = "INSERT INTO users (nim, password) VALUES (?, ?)";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, nimm);
+            pst.setString(2, password);
+            
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Pendaftaran berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                new FormLogin().setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(this, "NIM atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Pendaftaran gagal!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (HeadlessException | SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Kesalahan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -65,16 +65,18 @@ public class FormLogin extends javax.swing.JFrame {
         panel_logo = new javax.swing.JPanel();
         logo = new javax.swing.JLabel();
         panel1 = new javax.swing.JPanel();
-        login = new javax.swing.JLabel();
+        register = new javax.swing.JLabel();
         nim = new javax.swing.JLabel();
         tf_nim = new javax.swing.JTextField();
         lb_pass = new javax.swing.JLabel();
         tf_pass = new javax.swing.JPasswordField();
         btn_login = new javax.swing.JButton();
         btn_register = new javax.swing.JButton();
+        lb_pass1 = new javax.swing.JLabel();
+        tf_confirmPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SKS MANAGER | LOGIN");
+        setTitle("SKS MANAGER | REGISTER");
         setBackground(new java.awt.Color(204, 204, 204));
         setName("frmLogin"); // NOI18N
         setResizable(false);
@@ -108,10 +110,10 @@ public class FormLogin extends javax.swing.JFrame {
         panel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
         panel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        login.setBackground(new java.awt.Color(19, 44, 58));
-        login.setFont(new java.awt.Font("Calibri", 1, 40)); // NOI18N
-        login.setForeground(new java.awt.Color(255, 255, 255));
-        login.setText("LOGIN");
+        register.setBackground(new java.awt.Color(19, 44, 58));
+        register.setFont(new java.awt.Font("Calibri", 1, 40)); // NOI18N
+        register.setForeground(new java.awt.Color(255, 255, 255));
+        register.setText("REGISTER");
 
         nim.setBackground(new java.awt.Color(19, 44, 58));
         nim.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
@@ -158,11 +160,26 @@ public class FormLogin extends javax.swing.JFrame {
         btn_register.setFont(new java.awt.Font("Calibri", 1, 30)); // NOI18N
         btn_register.setForeground(new java.awt.Color(19, 44, 58));
         btn_register.setText("REGISTER");
-        btn_register.setActionCommand("REGISTER");
         btn_register.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
         btn_register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_registerActionPerformed(evt);
+            }
+        });
+
+        lb_pass1.setBackground(new java.awt.Color(19, 44, 58));
+        lb_pass1.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        lb_pass1.setForeground(new java.awt.Color(255, 255, 255));
+        lb_pass1.setText("COMFIRM PASSWORD:");
+        lb_pass1.setAlignmentY(0.0F);
+        lb_pass1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        tf_confirmPass.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        tf_confirmPass.setForeground(new java.awt.Color(19, 44, 58));
+        tf_confirmPass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        tf_confirmPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_confirmPassActionPerformed(evt);
             }
         });
 
@@ -174,42 +191,54 @@ public class FormLogin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tf_pass, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-                                    .addComponent(nim)
-                                    .addComponent(tf_nim, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lb_pass))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                        .addComponent(nim)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(register)
+                        .addGap(113, 113, 113))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(login)
-                        .addGap(148, 148, 148))
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tf_confirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lb_pass1))
+                            .addComponent(tf_nim, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_pass))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(login)
-                .addGap(17, 17, 17)
-                .addComponent(nim, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(register)
+                        .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nim, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tf_nim, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(lb_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lb_pass1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_confirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -240,12 +269,16 @@ public class FormLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_tf_passActionPerformed
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        login();        // TODO add your handling code here:
+        this.dispose();
+        new FormLogin().setVisible(true);
     }//GEN-LAST:event_btn_loginActionPerformed
 
+    private void tf_confirmPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_confirmPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_confirmPassActionPerformed
+
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
-        this.dispose();
-        new FormRegister().setVisible(true);
+        register();
     }//GEN-LAST:event_btn_registerActionPerformed
 
     /**
@@ -265,20 +298,21 @@ public class FormLogin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormLogin().setVisible(true);
+                new FormRegister().setVisible(true);
             }
         });
     }
@@ -287,11 +321,13 @@ public class FormLogin extends javax.swing.JFrame {
     private javax.swing.JButton btn_login;
     private javax.swing.JButton btn_register;
     private javax.swing.JLabel lb_pass;
-    private javax.swing.JLabel login;
+    private javax.swing.JLabel lb_pass1;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel nim;
     private javax.swing.JPanel panel1;
     private javax.swing.JPanel panel_logo;
+    private javax.swing.JLabel register;
+    private javax.swing.JPasswordField tf_confirmPass;
     private javax.swing.JTextField tf_nim;
     private javax.swing.JPasswordField tf_pass;
     // End of variables declaration//GEN-END:variables
