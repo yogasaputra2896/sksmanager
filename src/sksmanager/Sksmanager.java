@@ -4,17 +4,43 @@
  */
 package sksmanager;
 
-/**
- *
- * @author yogasaputra28
- */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 public class Sksmanager {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    private Connection con;
+    private Statement stmt;
+    private ResultSet rs;
+    private String sql;
+
+    // Metode untuk konfigurasi koneksi ke database
+    public static Connection getConnection() {
+        Connection con = null;
+        try {
+            // Menambahkan driver MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/sksmanager", "root", "");
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Koneksi Gagal: Mysql Tidak Terhubung atau Database Tidak Ditemukan - " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return con;
     }
-    
+
+    public static void main(String[] args) {
+        // Mencoba menghubungkan ke database
+        Connection con = getConnection();
+
+        if (con == null) {
+            // Jika koneksi gagal, keluar dari program
+            System.exit(0);
+        }
+
+        // Jika koneksi berhasil, tampilkan FormLogin
+        new FormLogin().setVisible(true);
+    }
 }
