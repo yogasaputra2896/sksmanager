@@ -26,31 +26,175 @@ public class FormLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        panel_logo = new javax.swing.JPanel();
+        logo = new javax.swing.JLabel();
+        panel1 = new javax.swing.JPanel();
+        login = new javax.swing.JLabel();
+        nim = new javax.swing.JLabel();
+        tf_nim = new javax.swing.JTextField();
+        lb_pass = new javax.swing.JLabel();
+        tf_pass = new javax.swing.JPasswordField();
+        btn_login = new javax.swing.JButton();
+        btn_register = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SKS MANAGER | LOGIN");
+        setBackground(new java.awt.Color(204, 204, 204));
+        setName("frmLogin"); // NOI18N
+        setResizable(false);
 
-        jButton1.setText("jButton1");
+        panel_logo.setBackground(new java.awt.Color(255, 255, 255));
+
+        logo.setBackground(new java.awt.Color(255, 255, 255));
+        logo.setForeground(new java.awt.Color(19, 44, 58));
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sksmanager/image/logo.png"))); // NOI18N
+        logo.setToolTipText("");
+        logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+
+        javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
+        panel_logo.setLayout(panel_logoLayout);
+        panel_logoLayout.setHorizontalGroup(
+            panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_logoLayout.createSequentialGroup()
+                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panel_logoLayout.setVerticalGroup(
+            panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_logoLayout.createSequentialGroup()
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 62, Short.MAX_VALUE))
+        );
+
+        logo.getAccessibleContext().setAccessibleName("");
+
+        panel1.setBackground(new java.awt.Color(19, 44, 58));
+        panel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        panel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        login.setBackground(new java.awt.Color(19, 44, 58));
+        login.setFont(new java.awt.Font("Calibri", 1, 40)); // NOI18N
+        login.setForeground(new java.awt.Color(255, 255, 255));
+        login.setText("LOGIN");
+
+        nim.setBackground(new java.awt.Color(19, 44, 58));
+        nim.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        nim.setForeground(new java.awt.Color(255, 255, 255));
+        nim.setText("NIM:");
+        nim.setAlignmentY(0.0F);
+        nim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        tf_nim.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_nim.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(19, 44, 58), 3, true));
+        tf_nim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_nimActionPerformed(evt);
+            }
+        });
+
+        lb_pass.setBackground(new java.awt.Color(19, 44, 58));
+        lb_pass.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        lb_pass.setForeground(new java.awt.Color(255, 255, 255));
+        lb_pass.setText("PASSWORD:");
+        lb_pass.setAlignmentY(0.0F);
+        lb_pass.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        tf_pass.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_pass.setForeground(new java.awt.Color(19, 44, 58));
+        tf_pass.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(19, 44, 58), 3, true));
+        tf_pass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_passActionPerformed(evt);
+            }
+        });
+
+        btn_login.setFont(new java.awt.Font("Calibri", 1, 30)); // NOI18N
+        btn_login.setForeground(new java.awt.Color(19, 44, 58));
+        btn_login.setActionCommand("LOGIN");
+        btn_login.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(19, 44, 58), 3, true));
+        btn_login.setLabel("LOGIN");
+
+        btn_register.setFont(new java.awt.Font("Calibri", 1, 30)); // NOI18N
+        btn_register.setForeground(new java.awt.Color(19, 44, 58));
+        btn_register.setText("REGISTER");
+        btn_register.setActionCommand("REGISTER");
+        btn_register.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(19, 44, 58), 3, true));
+
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tf_pass, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                                    .addComponent(nim)
+                                    .addComponent(tf_nim, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lb_pass))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(login)
+                        .addGap(148, 148, 148))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(login)
+                .addGap(17, 17, 17)
+                .addComponent(nim, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_nim, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lb_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(157, 157, 157)
-                .addComponent(jButton1)
-                .addContainerGap(168, Short.MAX_VALUE))
+                .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jButton1)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tf_nimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_nimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_nimActionPerformed
+
+    private void tf_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_passActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_passActionPerformed
 
     /**
      * @param args the command line arguments
@@ -88,6 +232,15 @@ public class FormLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_login;
+    private javax.swing.JButton btn_register;
+    private javax.swing.JLabel lb_pass;
+    private javax.swing.JLabel login;
+    private javax.swing.JLabel logo;
+    private javax.swing.JLabel nim;
+    private javax.swing.JPanel panel1;
+    private javax.swing.JPanel panel_logo;
+    private javax.swing.JTextField tf_nim;
+    private javax.swing.JPasswordField tf_pass;
     // End of variables declaration//GEN-END:variables
 }
