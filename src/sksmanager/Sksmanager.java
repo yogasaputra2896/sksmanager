@@ -24,7 +24,7 @@ public class Sksmanager {
         try {
             // Menambahkan driver MySQL
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/sksmanager", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/sksmanager", "root", "12345");
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Koneksi Gagal: Mysql Tidak Terhubung atau Database Tidak Ditemukan - " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
