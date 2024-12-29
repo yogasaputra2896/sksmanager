@@ -13,34 +13,38 @@ import javax.swing.JOptionPane;
 
 public class Sksmanager {
 
-    private Connection con;
-    private Statement stmt;
-    private ResultSet rs;
-    private String sql;
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
 
-    // Metode untuk konfigurasi koneksi ke database
     public static Connection getConnection() {
-        Connection con = null;
+        con = null;
+        stmt = null;
         try {
-            // Menambahkan driver MySQL
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/sksmanager", "root", "12345");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/sksmanager", "root", "");
+            stmt = con.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Koneksi Gagal: Mysql Tidak Terhubung atau Database Tidak Ditemukan - " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Koneksi Gagal: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return con;
     }
 
-    public static void main(String[] args) {
-        // Mencoba menghubungkan ke database
-        Connection con = getConnection();
+    public static void closeConnection() {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Gagal menutup koneksi: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    public static void main(String[] args) {
+        con = getConnection();
         if (con == null) {
-            // Jika koneksi gagal, keluar dari program
             System.exit(0);
         }
-
-        // Jika koneksi berhasil, tampilkan FormLogin
         new FormLogin().setVisible(true);
     }
 }

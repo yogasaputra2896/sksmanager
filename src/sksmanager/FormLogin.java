@@ -12,7 +12,8 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class FormLogin extends javax.swing.JFrame {
-
+    
+    public static String userNIM;
     Connection con;
     Statement stmt;
     ResultSet rs;
@@ -27,10 +28,10 @@ public class FormLogin extends javax.swing.JFrame {
     }
 
     private void login() {
-        String nimm = tf_nim.getText().trim();
+        userNIM = tf_nim.getText().trim();
         String password = new String(tf_pass.getPassword()).trim();
 
-        if (nimm.isEmpty() || password.isEmpty()) {
+        if (userNIM.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "NIM dan Password tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -38,14 +39,14 @@ public class FormLogin extends javax.swing.JFrame {
         try {
             stmt = con.createStatement();
             // Query untuk mengecek apakah nim dan password cocok
-            String query = "SELECT * FROM users WHERE nim = '" + nimm + "' AND password = '" + password + "'";
+            String query = "SELECT * FROM users WHERE nim = '" + userNIM + "' AND password = '" + password + "'";
             rs = stmt.executeQuery(query);
 
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Login berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
                 // Tambahkan logika untuk membuka halaman berikutnya di sini
                 this.dispose(); // Menutup form login
-                new Main().setVisible(true);
+                new Manager().setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "NIM atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
