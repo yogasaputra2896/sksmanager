@@ -16,6 +16,10 @@ public class FormRegister extends javax.swing.JFrame {
     public FormRegister() {
         initComponents();
         con = Sksmanager.getConnection();
+        if (con == null) {
+            JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0); // Keluar jika koneksi gagal
+        }
     }
 
      private void register() {
@@ -161,6 +165,7 @@ public class FormRegister extends javax.swing.JFrame {
         btn_register.setForeground(new java.awt.Color(19, 44, 58));
         btn_register.setText("REGISTER");
         btn_register.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        btn_register.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_registerActionPerformed(evt);
