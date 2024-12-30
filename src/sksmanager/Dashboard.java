@@ -26,6 +26,7 @@ public class Dashboard extends javax.swing.JFrame {
     
     private void loadData() {
         try {
+            nim = FormLogin.userNIM;
             rs = stmt.executeQuery("SELECT nama_mahasiswa, kampus, fakultas, min_sks FROM users WHERE nim = '" + nim + "'");
 
             if (rs.next()) {
@@ -364,7 +365,8 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dashboardActionPerformed
-      
+        this.dispose();
+        new Dashboard().setVisible(true);
     }//GEN-LAST:event_btn_dashboardActionPerformed
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
@@ -373,13 +375,15 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_logoutActionPerformed
 
     private void btn_manager1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_manager1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new Manager().setVisible(true);
     }//GEN-LAST:event_btn_manager1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
