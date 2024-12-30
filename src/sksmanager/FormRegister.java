@@ -26,9 +26,13 @@ public class FormRegister extends javax.swing.JFrame {
         String nimm = tf_nim.getText().trim();
         String password = new String(tf_pass.getPassword()).trim();
         String confirmPassword = new String(tf_confirmPass.getPassword()).trim();
+        String kampus = tf_kampus.getText().trim();
+        String nama_mahasiswa = tf_mahasiswa.getText().trim();
+        String fakultas = tf_fakultas.getText().trim();
+        String sks_tempuh = tf_sks.getText().trim();
 
         // Validasi input
-        if (nimm.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (nimm.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()|| kampus.isEmpty()|| nama_mahasiswa.isEmpty() || fakultas.isEmpty() || sks_tempuh.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua kolom harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -39,10 +43,14 @@ public class FormRegister extends javax.swing.JFrame {
         }
 
         try {
-            String query = "INSERT INTO users (nim, password) VALUES (?, ?)";
+            String query = "INSERT INTO users (nim, password, kampus, nama_mahasiswa, fakultas, min_sks) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, nimm);
             pst.setString(2, password);
+            pst.setString(3, kampus);
+            pst.setString(4, nama_mahasiswa);
+            pst.setString(5, fakultas);
+            pst.setString(6, sks_tempuh);
             
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
@@ -78,6 +86,14 @@ public class FormRegister extends javax.swing.JFrame {
         btn_register = new javax.swing.JButton();
         lb_pass1 = new javax.swing.JLabel();
         tf_confirmPass = new javax.swing.JPasswordField();
+        lb_pass2 = new javax.swing.JLabel();
+        lb_mahasiswa = new javax.swing.JLabel();
+        lb_fakultas = new javax.swing.JLabel();
+        lb_sks = new javax.swing.JLabel();
+        tf_kampus = new javax.swing.JTextField();
+        tf_mahasiswa = new javax.swing.JTextField();
+        tf_fakultas = new javax.swing.JTextField();
+        tf_sks = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SKS MANAGER | REGISTER");
@@ -104,8 +120,8 @@ public class FormRegister extends javax.swing.JFrame {
         panel_logoLayout.setVerticalGroup(
             panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_logoLayout.createSequentialGroup()
-                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         logo.getAccessibleContext().setAccessibleName("");
@@ -120,13 +136,13 @@ public class FormRegister extends javax.swing.JFrame {
         register.setText("REGISTER");
 
         nim.setBackground(new java.awt.Color(19, 44, 58));
-        nim.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        nim.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         nim.setForeground(new java.awt.Color(255, 255, 255));
-        nim.setText("NIM:");
+        nim.setText("NIM                                       :");
         nim.setAlignmentY(0.0F);
         nim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        tf_nim.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        tf_nim.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         tf_nim.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
         tf_nim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,13 +151,13 @@ public class FormRegister extends javax.swing.JFrame {
         });
 
         lb_pass.setBackground(new java.awt.Color(19, 44, 58));
-        lb_pass.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        lb_pass.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         lb_pass.setForeground(new java.awt.Color(255, 255, 255));
-        lb_pass.setText("PASSWORD:");
+        lb_pass.setText("PASSWORD                         :");
         lb_pass.setAlignmentY(0.0F);
         lb_pass.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        tf_pass.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        tf_pass.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         tf_pass.setForeground(new java.awt.Color(19, 44, 58));
         tf_pass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
         tf_pass.addActionListener(new java.awt.event.ActionListener() {
@@ -175,13 +191,13 @@ public class FormRegister extends javax.swing.JFrame {
         });
 
         lb_pass1.setBackground(new java.awt.Color(19, 44, 58));
-        lb_pass1.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        lb_pass1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         lb_pass1.setForeground(new java.awt.Color(255, 255, 255));
-        lb_pass1.setText("COMFIRM PASSWORD:");
+        lb_pass1.setText("COMFIRM PASSWORD    :");
         lb_pass1.setAlignmentY(0.0F);
         lb_pass1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        tf_confirmPass.setFont(new java.awt.Font("Calibri", 0, 30)); // NOI18N
+        tf_confirmPass.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         tf_confirmPass.setForeground(new java.awt.Color(19, 44, 58));
         tf_confirmPass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
         tf_confirmPass.addActionListener(new java.awt.event.ActionListener() {
@@ -190,62 +206,157 @@ public class FormRegister extends javax.swing.JFrame {
             }
         });
 
+        lb_pass2.setBackground(new java.awt.Color(19, 44, 58));
+        lb_pass2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        lb_pass2.setForeground(new java.awt.Color(255, 255, 255));
+        lb_pass2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lb_pass2.setText("KAMPUS                               : ");
+        lb_pass2.setAlignmentY(0.0F);
+        lb_pass2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        lb_mahasiswa.setBackground(new java.awt.Color(19, 44, 58));
+        lb_mahasiswa.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        lb_mahasiswa.setForeground(new java.awt.Color(255, 255, 255));
+        lb_mahasiswa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lb_mahasiswa.setText("NAMA MAHASISWA         : ");
+        lb_mahasiswa.setAlignmentY(0.0F);
+        lb_mahasiswa.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        lb_fakultas.setBackground(new java.awt.Color(19, 44, 58));
+        lb_fakultas.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        lb_fakultas.setForeground(new java.awt.Color(255, 255, 255));
+        lb_fakultas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lb_fakultas.setText("FAKULTAS                            : ");
+        lb_fakultas.setAlignmentY(0.0F);
+        lb_fakultas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        lb_sks.setBackground(new java.awt.Color(19, 44, 58));
+        lb_sks.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        lb_sks.setForeground(new java.awt.Color(255, 255, 255));
+        lb_sks.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lb_sks.setText("SKS TEMPUH                       : ");
+        lb_sks.setAlignmentY(0.0F);
+        lb_sks.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        tf_kampus.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_kampus.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        tf_kampus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_kampusActionPerformed(evt);
+            }
+        });
+
+        tf_mahasiswa.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_mahasiswa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        tf_mahasiswa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_mahasiswaActionPerformed(evt);
+            }
+        });
+
+        tf_fakultas.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_fakultas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        tf_fakultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_fakultasActionPerformed(evt);
+            }
+        });
+
+        tf_sks.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        tf_sks.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(19, 44, 58), 3));
+        tf_sks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_sksActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(207, 207, 207)
+                .addComponent(register)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(btn_register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                        .addComponent(nim)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(register)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_register, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tf_confirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lb_pass1))
-                            .addComponent(tf_nim, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_pass))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panel1Layout.createSequentialGroup()
+                                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(nim)
+                                                .addComponent(lb_pass)
+                                                .addComponent(lb_pass1))
+                                            .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(panel1Layout.createSequentialGroup()
+                                            .addComponent(lb_pass2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(lb_mahasiswa)
+                                        .addGap(4, 4, 4)))
+                                .addGroup(panel1Layout.createSequentialGroup()
+                                    .addComponent(lb_fakultas)
+                                    .addGap(7, 7, 7)))
+                            .addGroup(panel1Layout.createSequentialGroup()
+                                .addComponent(lb_sks)
+                                .addGap(5, 5, 5)))
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tf_sks, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(tf_fakultas, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                                .addComponent(tf_mahasiswa)
+                                .addComponent(tf_kampus)
+                                .addComponent(tf_nim)
+                                .addComponent(tf_pass)
+                                .addComponent(tf_confirmPass, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                .addGap(144, 144, 144))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
                         .addComponent(register)
-                        .addGap(31, 31, 31))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(nim, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(9, 9, 9)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tf_nim, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tf_confirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_pass1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_kampus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lb_mahasiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_mahasiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tf_nim, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lb_fakultas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_fakultas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tf_sks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lb_sks, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(lb_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tf_pass, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lb_pass1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tf_confirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_register, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -255,13 +366,18 @@ public class FormRegister extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -287,6 +403,22 @@ public class FormRegister extends javax.swing.JFrame {
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
         register();
     }//GEN-LAST:event_btn_registerActionPerformed
+
+    private void tf_kampusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_kampusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_kampusActionPerformed
+
+    private void tf_mahasiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_mahasiswaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_mahasiswaActionPerformed
+
+    private void tf_fakultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_fakultasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_fakultasActionPerformed
+
+    private void tf_sksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_sksActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_sksActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,15 +459,23 @@ public class FormRegister extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_login;
     private javax.swing.JButton btn_register;
+    private javax.swing.JLabel lb_fakultas;
+    private javax.swing.JLabel lb_mahasiswa;
     private javax.swing.JLabel lb_pass;
     private javax.swing.JLabel lb_pass1;
+    private javax.swing.JLabel lb_pass2;
+    private javax.swing.JLabel lb_sks;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel nim;
     private javax.swing.JPanel panel1;
     private javax.swing.JPanel panel_logo;
     private javax.swing.JLabel register;
     private javax.swing.JPasswordField tf_confirmPass;
+    private javax.swing.JTextField tf_fakultas;
+    private javax.swing.JTextField tf_kampus;
+    private javax.swing.JTextField tf_mahasiswa;
     private javax.swing.JTextField tf_nim;
     private javax.swing.JPasswordField tf_pass;
+    private javax.swing.JTextField tf_sks;
     // End of variables declaration//GEN-END:variables
 }
