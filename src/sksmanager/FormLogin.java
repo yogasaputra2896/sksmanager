@@ -46,7 +46,7 @@ public class FormLogin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Login berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
                 // Tambahkan logika untuk membuka halaman berikutnya di sini
                 this.dispose(); // Menutup form login
-                new Manager().setVisible(true);
+                new Dashboard().setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "NIM atau Password salah!", "Error", JOptionPane.ERROR_MESSAGE);
             }
