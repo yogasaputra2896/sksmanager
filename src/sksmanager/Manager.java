@@ -45,7 +45,7 @@ public class Manager extends javax.swing.JFrame {
     private void tampilData(){
         nim = FormLogin.userNIM;
         DefaultTableModel isitabel = new DefaultTableModel();
-        isitabel.addColumn("ID");
+        isitabel.addColumn("NOMOR");
         isitabel.addColumn("KODE");
         isitabel.addColumn("MATAKULIAH");
         isitabel.addColumn("SEMESTER");
@@ -53,9 +53,9 @@ public class Manager extends javax.swing.JFrame {
         isitabel.addColumn("NILAI");
         isitabel.addColumn("STATUS");
         try{
-            rs = stmt.executeQuery("SELECT id, kode_matkul, nama_matkul, semester, sks, nilai, status FROM data_manager WHERE nim = '" + nim + "'");
+            rs = stmt.executeQuery("SELECT nomor, kode_matkul, nama_matkul, semester, sks, nilai, status FROM data_manager WHERE nim = '" + nim + "'");
             while(rs.next()){
-                isitabel.addRow(new Object[] {rs.getString("id"),
+                isitabel.addRow(new Object[] {rs.getString("nomor"),
                     rs.getString("kode_matkul"),
                     rs.getString("nama_matkul"),
                     rs.getString("semester"),
@@ -70,7 +70,7 @@ public class Manager extends javax.swing.JFrame {
     }
     
     private void resetInputFields() {
-        Tf_id.setText("");
+        Tf_nomor.setText("");
         Tf_nama_matkul.setText("");
         Tf_semester.setText("");
         Tf_sks.setText("");
@@ -95,7 +95,7 @@ public class Manager extends javax.swing.JFrame {
         panel_dashboard = new javax.swing.JPanel();
         title_manager = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        Tf_id = new javax.swing.JTextField();
+        Tf_nomor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         Tf_kode = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -194,7 +194,7 @@ public class Manager extends javax.swing.JFrame {
         title_manager.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
         title_manager.setText("MANAGER");
 
-        jLabel2.setText("ID");
+        jLabel2.setText("NOMOR");
 
         jLabel8.setText("KODE MATKUL");
 
@@ -255,7 +255,15 @@ public class Manager extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout panel_dashboardLayout = new javax.swing.GroupLayout(panel_dashboard);
@@ -303,7 +311,7 @@ public class Manager extends javax.swing.JFrame {
                                     .addGap(58, 58, 58)
                                     .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(Tf_nomor, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_dashboardLayout.createSequentialGroup()
                                     .addGap(149, 149, 149)
                                     .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -326,16 +334,16 @@ public class Manager extends javax.swing.JFrame {
                 .addGroup(panel_dashboardLayout.createSequentialGroup()
                     .addGap(109, 109, 109)
                     .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Tf_nomor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
                         .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
                     .addGap(7, 7, 7)
                     .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel9)
@@ -400,7 +408,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_manager1ActionPerformed
 
     private void Btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_saveActionPerformed
-        String id = Tf_id.getText();
+        String nomor = Tf_nomor.getText();
         String kode = Tf_kode.getText();
         String nama_matkul = Tf_nama_matkul.getText();
         String sks = Tf_sks.getText();
@@ -408,25 +416,33 @@ public class Manager extends javax.swing.JFrame {
         String status = Tf_status.getText();
         String semester = Tf_semester.getText();
 
-        if (id.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty() || nim.isEmpty()) {
+        if (nomor.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty() || nim.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Semua kolom harus diisi!");
         } else {
             try {
-                // Query untuk mengecek apakah data dengan kombinasi id, kode, nama_matkul, dan nim sudah ada
-                String checkSql = "SELECT COUNT(*) AS count FROM data_manager WHERE id = '" + id
+                // Query untuk mengecek apakah data dengan kombinasi nomor, kode, nama_matkul, dan nim sudah ada
+                String checkSql = "SELECT COUNT(*) AS count FROM data_manager WHERE nomor = '" + nomor
                 + "' AND kode_matkul = '" + kode
                 + "' AND nama_matkul = '" + nama_matkul
                 + "' AND nim = '" + nim + "'";
                 rs = stmt.executeQuery(checkSql);
                 rs.next();
+                
+                
+                String checkSql2 = "SELECT COUNT(*) AS count FROM data_manager WHERE nim = '" + nim 
+                + "' AND kode_matkul = '" + kode
+                + "' AND nama_matkul = '" + nama_matkul
+                + "' AND nim = '" + nim + "'";
+                rs = stmt.executeQuery(checkSql2);
+                rs.next();
                 int count = rs.getInt("count");
 
                 if (count > 0) {
-                    JOptionPane.showMessageDialog(null, "Data dengan kombinasi id, kode, nama_matkul, dan nim sudah ada!");
+                    JOptionPane.showMessageDialog(null, "Data dengan kombinasi nomor, kode, nama_matkul!");
                 } else {
                     // Jika tidak ada data duplikat, lakukan insert
-                    String sql = "INSERT INTO data_manager (id, kode_matkul, nama_matkul, semester, sks, nilai, status, nim) VALUES ('"
-                    + id + "', '"
+                    String sql = "INSERT INTO data_manager (nomor, kode_matkul, nama_matkul, semester, sks, nilai, status, nim) VALUES ('"
+                    + nomor + "', '"
                     + kode + "', '"
                     + nama_matkul + "', '"
                     + semester + "', '"
@@ -446,7 +462,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_Btn_saveActionPerformed
 
     private void Btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_updateActionPerformed
-        String id = Tf_id.getText();
+        String nomor = Tf_nomor.getText();
         String kode = Tf_kode.getText();
         String nama_matkul = Tf_nama_matkul.getText();
         String semester = Tf_semester.getText();
@@ -454,13 +470,13 @@ public class Manager extends javax.swing.JFrame {
         String nilai = Tf_nilai.getText();
         String status = Tf_status.getText();
 
-        if (id.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty()) {
+        if (nomor.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong untuk memperbarui data!");
         } else {
             try {
-                String sql = "UPDATE data_manager SET nim = '" + nim
-                + "', id = '" + id
-                + "', semster = '" + semester
+                String sql = "UPDATE data_manager SET kode_matkul = '" + kode
+                + "', nomor = '" + nomor
+                + "', semester = '" + semester
                 + "', sks = '" + sks
                 + "', nilai = '" + nilai
                 + "', status = '" + status
@@ -515,7 +531,7 @@ public class Manager extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Silakan pilih data di tabel terlebih dahulu!");
         } else {
             // Ambil data dari tabel berdasarkan indeks kolom
-            String id = jTable1.getValueAt(selectedRow, 0).toString();
+            String nomor = jTable1.getValueAt(selectedRow, 0).toString();
             String kode = jTable1.getValueAt(selectedRow, 1).toString();
             String nama_matkul = jTable1.getValueAt(selectedRow, 2).toString();
             String semester = jTable1.getValueAt(selectedRow, 3).toString();
@@ -524,7 +540,7 @@ public class Manager extends javax.swing.JFrame {
             String status = jTable1.getValueAt(selectedRow, 6).toString();
 
             // Set data ke text field
-            Tf_id.setText(id);
+            Tf_nomor.setText(nomor);
             Tf_nama_matkul.setText(nama_matkul);
             Tf_semester.setText(semester);
             Tf_sks.setText(sks);
@@ -583,10 +599,10 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JButton Btn_save;
     private javax.swing.JButton Btn_select;
     private javax.swing.JButton Btn_update;
-    private javax.swing.JTextField Tf_id;
     private javax.swing.JTextField Tf_kode;
     private javax.swing.JTextField Tf_nama_matkul;
     private javax.swing.JTextField Tf_nilai;
+    private javax.swing.JTextField Tf_nomor;
     private javax.swing.JTextField Tf_semester;
     private javax.swing.JTextField Tf_sks;
     private javax.swing.JTextField Tf_status;
