@@ -46,9 +46,24 @@ public class Dashboard extends javax.swing.JFrame {
                 lbnama_kampus.setText("Kampus: Tidak ditemukan");
                 lbnama_fakultas.setText("Fakultas: Tidak ditemukan");
             }
+            
+            rs = stmt.executeQuery("SELECT SUM(sks) AS total_sks_lulus FROM data_manager WHERE nim = '" + nim + "' AND status = 'LULUS'");
+            if (rs.next()) {
+                String sksLulus = rs.getString("total_sks_lulus");
+                if (sksLulus == null) sksLulus = "0"; 
+                nilai_sks_lulus.setText(sksLulus);
+            }
+
+            rs = stmt.executeQuery("SELECT SUM(sks) AS total_sks_tidaklulus FROM data_manager WHERE nim = '" + nim + "' AND status = 'TIDAK LULUS'");
+            if (rs.next()) {
+                String sksTidakLulus = rs.getString("total_sks_tidaklulus");
+                if (sksTidakLulus == null) sksTidakLulus = "0"; 
+                nilai_sks_tidaklulus.setText(sksTidakLulus);
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
     public Dashboard() {
         initComponents();
