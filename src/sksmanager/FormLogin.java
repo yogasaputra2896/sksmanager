@@ -37,6 +37,7 @@ public class FormLogin extends javax.swing.JFrame {
         }
 
         try {
+            userNIM = tf_nim.getText().trim();
             stmt = con.createStatement();
             // Query untuk mengecek apakah nim dan password cocok
             String query = "SELECT * FROM users WHERE nim = '" + userNIM + "' AND password = '" + password + "'";
