@@ -20,6 +20,7 @@ public class FormLogin extends javax.swing.JFrame {
 
     public FormLogin() {
         initComponents();
+        setLocationRelativeTo(null);
         con = Sksmanager.getConnection(); // Mengambil koneksi dari kelas SKSManager
         if (con == null) {
             JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);

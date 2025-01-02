@@ -171,14 +171,12 @@
                           </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="tf_sks" pref="270" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="tf_fakultas" pref="270" max="32767" attributes="0"/>
-                                  <Component id="tf_mahasiswa" max="32767" attributes="0"/>
-                                  <Component id="tf_kampus" max="32767" attributes="0"/>
-                                  <Component id="tf_nim" max="32767" attributes="0"/>
-                                  <Component id="tf_pass" max="32767" attributes="0"/>
-                                  <Component id="tf_confirmPass" alignment="1" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="tf_fakultas" pref="270" max="32767" attributes="0"/>
+                              <Component id="tf_mahasiswa" max="32767" attributes="0"/>
+                              <Component id="tf_kampus" max="32767" attributes="0"/>
+                              <Component id="tf_nim" max="32767" attributes="0"/>
+                              <Component id="tf_pass" max="32767" attributes="0"/>
+                              <Component id="tf_confirmPass" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
