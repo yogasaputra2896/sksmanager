@@ -15,6 +15,7 @@ public class FormRegister extends javax.swing.JFrame {
     
     public FormRegister() {
         initComponents();
+        setLocationRelativeTo(null);
         con = Sksmanager.getConnection();
         if (con == null) {
             JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);

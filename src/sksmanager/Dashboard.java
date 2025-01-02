@@ -28,30 +28,30 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             nim = FormLogin.userNIM;
             rs = stmt.executeQuery("SELECT nama_mahasiswa, kampus, fakultas, min_sks FROM users WHERE nim = '" + nim + "'");
-
+            int minSks = 0;
+            
             if (rs.next()) {
-                // Ambil data dari ResultSet
                 String namaMahasiswa = rs.getString("nama_mahasiswa");
                 String kampus = rs.getString("kampus");
                 String fakultas = rs.getString("fakultas");
                 String sks_tempuh = rs.getString("min_sks");
-
-                // Set nilai ke label
+                minSks = Integer.parseInt(sks_tempuh);
                 lbnama_mahasiswa.setText(namaMahasiswa);
                 lbnama_kampus.setText(kampus);
                 lbnama_fakultas.setText(fakultas);
                 nilai_sks_tempuh.setText(sks_tempuh);
             } else {
-                // Jika data tidak ditemukan
                 lbnama_mahasiswa.setText("Nama Mahasiswa: Tidak ditemukan");
                 lbnama_kampus.setText("Kampus: Tidak ditemukan");
                 lbnama_fakultas.setText("Fakultas: Tidak ditemukan");
             }
             
+            int totalSksLulus = 0;
             rs = stmt.executeQuery("SELECT SUM(sks) AS total_sks_lulus FROM data_manager WHERE nim = '" + nim + "' AND status = 'LULUS'");
             if (rs.next()) {
                 String sksLulus = rs.getString("total_sks_lulus");
-                if (sksLulus == null) sksLulus = "0"; 
+                if (sksLulus == null) sksLulus = "0";
+                totalSksLulus = Integer.parseInt(sksLulus);
                 nilai_sks_lulus.setText(sksLulus);
             }
 
@@ -61,6 +61,10 @@ public class Dashboard extends javax.swing.JFrame {
                 if (sksTidakLulus == null) sksTidakLulus = "0"; 
                 nilai_sks_tidaklulus.setText(sksTidakLulus);
             }
+            
+            int sksSisa = minSks - totalSksLulus;
+            if (sksSisa < 0) sksSisa = 0; 
+            nilai_sks_sisa.setText(String.valueOf(sksSisa));
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -68,6 +72,7 @@ public class Dashboard extends javax.swing.JFrame {
     }
     public Dashboard() {
         initComponents();
+        setLocationRelativeTo(null);
         con = Sksmanager.getConnection();
         if (con == null) {
             JOptionPane.showMessageDialog(null, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -99,7 +104,6 @@ public class Dashboard extends javax.swing.JFrame {
         btn_logout = new javax.swing.JButton();
         panel_dashboard = new javax.swing.JPanel();
         lbnama_kampus = new javax.swing.JLabel();
-        title_dashboard1 = new javax.swing.JLabel();
         lbnama_mahasiswa = new javax.swing.JLabel();
         lbnama_fakultas = new javax.swing.JLabel();
         panel_tempuh = new javax.swing.JPanel();
@@ -111,23 +115,34 @@ public class Dashboard extends javax.swing.JFrame {
         panel_tidaklulus = new javax.swing.JPanel();
         nilai_sks_tidaklulus = new javax.swing.JLabel();
         lbsks_tidaklulus = new javax.swing.JLabel();
+        panel_tempuh1 = new javax.swing.JPanel();
+        nilai_sks_sisa = new javax.swing.JLabel();
+        lbsks_sisa = new javax.swing.JLabel();
+        panel_log = new javax.swing.JPanel();
+        title_dashboard1 = new javax.swing.JLabel();
+        panel_log1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SKS MANAGER | DASHBOARD");
         setResizable(false);
+        setSize(new java.awt.Dimension(1024, 595));
 
         panel_nav.setBackground(new java.awt.Color(19, 44, 58));
         panel_nav.setForeground(new java.awt.Color(255, 255, 255));
 
         btn_dashboard.setBackground(new java.awt.Color(39, 82, 107));
-        btn_dashboard.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        btn_dashboard.setFont(new java.awt.Font("Calibri", 1, 25)); // NOI18N
         btn_dashboard.setForeground(new java.awt.Color(255, 255, 255));
+        btn_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sksmanager/image/home.png"))); // NOI18N
         btn_dashboard.setText("Dashboard");
         btn_dashboard.setAlignmentX(0.1F);
         btn_dashboard.setAlignmentY(0.0F);
         btn_dashboard.setBorder(null);
         btn_dashboard.setBorderPainted(false);
-        btn_dashboard.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_dashboard.setIconTextGap(10);
         btn_dashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_dashboardActionPerformed(evt);
@@ -135,15 +150,16 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         btn_manager1.setBackground(new java.awt.Color(19, 44, 58));
-        btn_manager1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        btn_manager1.setFont(new java.awt.Font("Calibri", 0, 25)); // NOI18N
         btn_manager1.setForeground(new java.awt.Color(255, 255, 255));
+        btn_manager1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sksmanager/image/table.png"))); // NOI18N
         btn_manager1.setText("Manager");
         btn_manager1.setActionCommand("");
         btn_manager1.setAlignmentX(0.1F);
         btn_manager1.setAlignmentY(0.0F);
         btn_manager1.setBorder(null);
         btn_manager1.setBorderPainted(false);
-        btn_manager1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_manager1.setIconTextGap(10);
         btn_manager1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_manager1ActionPerformed(evt);
@@ -153,13 +169,14 @@ public class Dashboard extends javax.swing.JFrame {
         btn_logout.setBackground(new java.awt.Color(19, 44, 58));
         btn_logout.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         btn_logout.setForeground(new java.awt.Color(255, 255, 255));
+        btn_logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/sksmanager/image/log-out.png"))); // NOI18N
         btn_logout.setText("Logout");
         btn_logout.setActionCommand("");
         btn_logout.setAlignmentX(0.1F);
         btn_logout.setAlignmentY(0.0F);
         btn_logout.setBorder(null);
         btn_logout.setBorderPainted(false);
-        btn_logout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_logout.setIconTextGap(10);
         btn_logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_logoutActionPerformed(evt);
@@ -180,7 +197,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(btn_dashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_manager1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 398, Short.MAX_VALUE)
                 .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -189,9 +206,6 @@ public class Dashboard extends javax.swing.JFrame {
 
         lbnama_kampus.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
         lbnama_kampus.setText("Nama Kampus");
-
-        title_dashboard1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        title_dashboard1.setText("DASHBOARD");
 
         lbnama_mahasiswa.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
         lbnama_mahasiswa.setText("Nama Mahasiswa");
@@ -222,12 +236,12 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(panel_tempuhLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(lbsks_tempuh1)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         panel_tempuhLayout.setVerticalGroup(
             panel_tempuhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_tempuhLayout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbsks_tempuh1)
                 .addGap(31, 31, 31)
                 .addComponent(nilai_sks_tempuh)
@@ -250,18 +264,19 @@ public class Dashboard extends javax.swing.JFrame {
         panel_lulusLayout.setHorizontalGroup(
             panel_lulusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_lulusLayout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(nilai_sks_lulus)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_lulusLayout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addComponent(lbsks_lulus)
-                .addGap(36, 36, 36))
+                .addGroup(panel_lulusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_lulusLayout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(nilai_sks_lulus))
+                    .addGroup(panel_lulusLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(lbsks_lulus)))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         panel_lulusLayout.setVerticalGroup(
             panel_lulusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_lulusLayout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbsks_lulus)
                 .addGap(31, 31, 31)
                 .addComponent(nilai_sks_lulus)
@@ -284,7 +299,7 @@ public class Dashboard extends javax.swing.JFrame {
         panel_tidaklulusLayout.setHorizontalGroup(
             panel_tidaklulusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_tidaklulusLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panel_tidaklulusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_tidaklulusLayout.createSequentialGroup()
                         .addComponent(lbsks_tidaklulus)
@@ -303,44 +318,144 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(35, 35, 35))
         );
 
+        panel_tempuh1.setBackground(new java.awt.Color(19, 44, 58));
+        panel_tempuh1.setForeground(new java.awt.Color(255, 255, 255));
+
+        nilai_sks_sisa.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        nilai_sks_sisa.setForeground(new java.awt.Color(255, 255, 255));
+        nilai_sks_sisa.setText("0");
+
+        lbsks_sisa.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        lbsks_sisa.setForeground(new java.awt.Color(255, 255, 255));
+        lbsks_sisa.setText("Sks Sisa");
+
+        javax.swing.GroupLayout panel_tempuh1Layout = new javax.swing.GroupLayout(panel_tempuh1);
+        panel_tempuh1.setLayout(panel_tempuh1Layout);
+        panel_tempuh1Layout.setHorizontalGroup(
+            panel_tempuh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_tempuh1Layout.createSequentialGroup()
+                .addGroup(panel_tempuh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_tempuh1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(nilai_sks_sisa))
+                    .addGroup(panel_tempuh1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(lbsks_sisa)))
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+        panel_tempuh1Layout.setVerticalGroup(
+            panel_tempuh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_tempuh1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbsks_sisa)
+                .addGap(31, 31, 31)
+                .addComponent(nilai_sks_sisa)
+                .addGap(35, 35, 35))
+        );
+
+        panel_log.setBackground(new java.awt.Color(19, 44, 58));
+
+        title_dashboard1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        title_dashboard1.setForeground(new java.awt.Color(255, 255, 255));
+        title_dashboard1.setText("DASHBOARD");
+
+        javax.swing.GroupLayout panel_logLayout = new javax.swing.GroupLayout(panel_log);
+        panel_log.setLayout(panel_logLayout);
+        panel_logLayout.setHorizontalGroup(
+            panel_logLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_logLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(title_dashboard1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panel_logLayout.setVerticalGroup(
+            panel_logLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_logLayout.createSequentialGroup()
+                .addGap(0, 9, Short.MAX_VALUE)
+                .addComponent(title_dashboard1))
+        );
+
+        panel_log1.setBackground(new java.awt.Color(19, 44, 58));
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Log Aktifitas");
+
+        javax.swing.GroupLayout panel_log1Layout = new javax.swing.GroupLayout(panel_log1);
+        panel_log1.setLayout(panel_log1Layout);
+        panel_log1Layout.setHorizontalGroup(
+            panel_log1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_log1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(645, Short.MAX_VALUE))
+        );
+        panel_log1Layout.setVerticalGroup(
+            panel_log1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_log1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
         javax.swing.GroupLayout panel_dashboardLayout = new javax.swing.GroupLayout(panel_dashboard);
         panel_dashboard.setLayout(panel_dashboardLayout);
         panel_dashboardLayout.setHorizontalGroup(
             panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_dashboardLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(15, 15, 15)
                 .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_dashboardLayout.createSequentialGroup()
-                        .addComponent(panel_tempuh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(panel_lulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(panel_tidaklulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(title_dashboard1)
-                    .addComponent(lbnama_mahasiswa)
-                    .addComponent(lbnama_fakultas)
-                    .addComponent(lbnama_kampus))
-                .addContainerGap(83, Short.MAX_VALUE))
+                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbnama_mahasiswa)
+                            .addComponent(lbnama_kampus)
+                            .addGroup(panel_dashboardLayout.createSequentialGroup()
+                                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lbnama_fakultas, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_dashboardLayout.createSequentialGroup()
+                                        .addComponent(panel_tempuh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(panel_tempuh1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(panel_lulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(panel_tidaklulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(79, Short.MAX_VALUE))
+                    .addGroup(panel_dashboardLayout.createSequentialGroup()
+                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panel_log1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panel_log, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         panel_dashboardLayout.setVerticalGroup(
             panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_dashboardLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panel_tidaklulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panel_dashboardLayout.createSequentialGroup()
-                        .addComponent(title_dashboard1)
-                        .addGap(27, 27, 27)
-                        .addComponent(lbnama_kampus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbnama_fakultas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbnama_mahasiswa)
-                        .addGap(43, 43, 43)
-                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panel_lulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel_tempuh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addComponent(panel_log, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(lbnama_kampus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbnama_fakultas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbnama_mahasiswa)
+                .addGap(18, 18, 18)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panel_tempuh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panel_tempuh1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panel_lulus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panel_tidaklulus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(panel_log1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -350,13 +465,14 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_nav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panel_dashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panel_dashboard, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panel_nav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -419,19 +535,27 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton btn_dashboard;
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_manager1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbnama_fakultas;
     private javax.swing.JLabel lbnama_kampus;
     private javax.swing.JLabel lbnama_mahasiswa;
     private javax.swing.JLabel lbsks_lulus;
+    private javax.swing.JLabel lbsks_sisa;
     private javax.swing.JLabel lbsks_tempuh1;
     private javax.swing.JLabel lbsks_tidaklulus;
     private javax.swing.JLabel nilai_sks_lulus;
+    private javax.swing.JLabel nilai_sks_sisa;
     private javax.swing.JLabel nilai_sks_tempuh;
     private javax.swing.JLabel nilai_sks_tidaklulus;
     private javax.swing.JPanel panel_dashboard;
+    private javax.swing.JPanel panel_log;
+    private javax.swing.JPanel panel_log1;
     private javax.swing.JPanel panel_lulus;
     private javax.swing.JPanel panel_nav;
     private javax.swing.JPanel panel_tempuh;
+    private javax.swing.JPanel panel_tempuh1;
     private javax.swing.JPanel panel_tidaklulus;
     private javax.swing.JLabel title_dashboard1;
     // End of variables declaration//GEN-END:variables
