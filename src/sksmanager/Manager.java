@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -45,7 +46,7 @@ public class Manager extends javax.swing.JFrame {
     private void tampilData(){
         nim = FormLogin.userNIM;
         DefaultTableModel isitabel = new DefaultTableModel();
-        isitabel.addColumn("ID");
+        isitabel.addColumn("NOMOR");
         isitabel.addColumn("KODE");
         isitabel.addColumn("MATAKULIAH");
         isitabel.addColumn("SEMESTER");
@@ -53,9 +54,9 @@ public class Manager extends javax.swing.JFrame {
         isitabel.addColumn("NILAI");
         isitabel.addColumn("STATUS");
         try{
-            rs = stmt.executeQuery("SELECT id, kode_matkul, nama_matkul, semester, sks, nilai, status FROM data_manager WHERE nim = '" + nim + "'");
+            rs = stmt.executeQuery("SELECT nomor, kode_matkul, nama_matkul, semester, sks, nilai, status FROM data_manager WHERE nim = '" + nim + "'");
             while(rs.next()){
-                isitabel.addRow(new Object[] {rs.getString("id"),
+                isitabel.addRow(new Object[] {rs.getString("nomor"),
                     rs.getString("kode_matkul"),
                     rs.getString("nama_matkul"),
                     rs.getString("semester"),
@@ -70,7 +71,7 @@ public class Manager extends javax.swing.JFrame {
     }
     
     private void resetInputFields() {
-        Tf_id.setText("");
+        Tf_nomor.setText("");
         Tf_nama_matkul.setText("");
         Tf_semester.setText("");
         Tf_sks.setText("");
@@ -95,7 +96,7 @@ public class Manager extends javax.swing.JFrame {
         panel_dashboard = new javax.swing.JPanel();
         title_manager = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        Tf_id = new javax.swing.JTextField();
+        Tf_nomor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         Tf_kode = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -115,6 +116,11 @@ public class Manager extends javax.swing.JFrame {
         Btn_select = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        Btn_Generate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SKS MANAGER | DASHBOARD");
@@ -123,7 +129,7 @@ public class Manager extends javax.swing.JFrame {
         panel_nav.setBackground(new java.awt.Color(19, 44, 58));
         panel_nav.setForeground(new java.awt.Color(255, 255, 255));
 
-        btn_dashboard.setBackground(new java.awt.Color(19, 44, 58));
+        btn_dashboard.setBackground(new java.awt.Color(39, 82, 107));
         btn_dashboard.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         btn_dashboard.setForeground(new java.awt.Color(255, 255, 255));
         btn_dashboard.setText("Dashboard");
@@ -174,9 +180,9 @@ public class Manager extends javax.swing.JFrame {
         panel_nav.setLayout(panel_navLayout);
         panel_navLayout.setHorizontalGroup(
             panel_navLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btn_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btn_manager1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-            .addComponent(btn_logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+            .addComponent(btn_logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btn_manager1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panel_navLayout.setVerticalGroup(
             panel_navLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,17 +190,17 @@ public class Manager extends javax.swing.JFrame {
                 .addComponent(btn_dashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_manager1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 406, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                 .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         panel_dashboard.setBackground(new java.awt.Color(255, 255, 255));
 
-        title_manager.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        title_manager.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         title_manager.setText("MANAGER");
 
-        jLabel2.setText("ID");
+        jLabel2.setText("NOMOR");
 
         jLabel8.setText("KODE MATKUL");
 
@@ -255,113 +261,166 @@ public class Manager extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Pilihan-", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Pilihan-", "1", "2", "3", "4", "5" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Pilihan-", "A", "A+", "A-", "B", "B+", "B-", "C", "C+", "C-", "D", "D+", "D-", "E" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Pilihan-", "LULUS", "TIDAK LULUS" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
+
+        Btn_Generate.setText("Generate Code");
+        Btn_Generate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_GenerateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_dashboardLayout = new javax.swing.GroupLayout(panel_dashboard);
         panel_dashboard.setLayout(panel_dashboardLayout);
         panel_dashboardLayout.setHorizontalGroup(
             panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_dashboardLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(title_manager)
-                .addContainerGap(648, Short.MAX_VALUE))
-            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panel_dashboardLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_dashboardLayout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_dashboardLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_dashboardLayout.createSequentialGroup()
+                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Tf_nomor, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panel_dashboardLayout.createSequentialGroup()
+                                .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Btn_Generate, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(panel_dashboardLayout.createSequentialGroup()
+                            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel9))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(panel_dashboardLayout.createSequentialGroup()
-                                    .addGap(0, 0, Short.MAX_VALUE)
-                                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(panel_dashboardLayout.createSequentialGroup()
-                                            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(panel_dashboardLayout.createSequentialGroup()
-                                                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(Btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(Btn_update)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(Btn_delete)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(Btn_reset)))
-                                            .addGap(18, 18, 18)
-                                            .addComponent(Btn_select)))
-                                    .addGap(181, 181, 181))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_dashboardLayout.createSequentialGroup()
-                                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(58, 58, 58)
-                                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(Tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel_dashboardLayout.createSequentialGroup()
-                                    .addGap(149, 149, 149)
-                                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(Tf_sks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Tf_nilai, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Tf_semester, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Tf_status, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGap(187, 187, 187)))
-                    .addContainerGap()))
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Tf_semester, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panel_dashboardLayout.createSequentialGroup()
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Tf_sks, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panel_dashboardLayout.createSequentialGroup()
+                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(Tf_nilai, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panel_dashboardLayout.createSequentialGroup()
+                                    .addGap(130, 130, 130)
+                                    .addComponent(Tf_status, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(panel_dashboardLayout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panel_dashboardLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(Btn_save)
+                        .addGap(18, 18, 18)
+                        .addComponent(Btn_update)
+                        .addGap(18, 18, 18)
+                        .addComponent(Btn_delete)
+                        .addGap(18, 18, 18)
+                        .addComponent(Btn_reset)
+                        .addGap(18, 18, 18)
+                        .addComponent(Btn_select)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panel_dashboardLayout.createSequentialGroup()
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panel_dashboardLayout.createSequentialGroup()
+                        .addGap(278, 278, 278)
+                        .addComponent(title_manager)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panel_dashboardLayout.setVerticalGroup(
             panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_dashboardLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(5, 5, 5)
                 .addComponent(title_manager)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panel_dashboardLayout.createSequentialGroup()
-                    .addGap(109, 109, 109)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Tf_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(7, 7, 7)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel9)
-                        .addComponent(Tf_semester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(Tf_sks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(Tf_nilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(Tf_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Btn_save)
-                        .addComponent(Btn_update)
-                        .addComponent(Btn_delete)
-                        .addComponent(Btn_reset)
-                        .addComponent(Btn_select))
-                    .addGap(18, 18, 18)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(109, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Tf_nomor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(Tf_kode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_Generate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Tf_nama_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tf_semester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tf_sks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tf_nilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Tf_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(panel_dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_delete)
+                    .addComponent(Btn_reset)
+                    .addComponent(Btn_select)
+                    .addComponent(Btn_update)
+                    .addComponent(Btn_save))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -375,11 +434,8 @@ public class Manager extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel_nav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(panel_nav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel_dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -400,7 +456,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_manager1ActionPerformed
 
     private void Btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_saveActionPerformed
-        String id = Tf_id.getText();
+        String nomor = Tf_nomor.getText();
         String kode = Tf_kode.getText();
         String nama_matkul = Tf_nama_matkul.getText();
         String sks = Tf_sks.getText();
@@ -408,25 +464,33 @@ public class Manager extends javax.swing.JFrame {
         String status = Tf_status.getText();
         String semester = Tf_semester.getText();
 
-        if (id.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty() || nim.isEmpty()) {
+        if (nomor.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty() || nim.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Semua kolom harus diisi!");
         } else {
             try {
-                // Query untuk mengecek apakah data dengan kombinasi id, kode, nama_matkul, dan nim sudah ada
-                String checkSql = "SELECT COUNT(*) AS count FROM data_manager WHERE id = '" + id
+                // Query untuk mengecek apakah data dengan kombinasi nomor, kode, nama_matkul, dan nim sudah ada
+                String checkSql = "SELECT COUNT(*) AS count FROM data_manager WHERE nomor = '" + nomor
                 + "' AND kode_matkul = '" + kode
                 + "' AND nama_matkul = '" + nama_matkul
                 + "' AND nim = '" + nim + "'";
                 rs = stmt.executeQuery(checkSql);
                 rs.next();
+                
+                
+                String checkSql2 = "SELECT COUNT(*) AS count FROM data_manager WHERE nim = '" + nim 
+                + "' AND kode_matkul = '" + kode
+                + "' AND nama_matkul = '" + nama_matkul
+                + "' AND nim = '" + nim + "'";
+                rs = stmt.executeQuery(checkSql2);
+                rs.next();
                 int count = rs.getInt("count");
 
                 if (count > 0) {
-                    JOptionPane.showMessageDialog(null, "Data dengan kombinasi id, kode, nama_matkul, dan nim sudah ada!");
+                    JOptionPane.showMessageDialog(null, "Data dengan kombinasi nomor, kode, nama_matkul!");
                 } else {
                     // Jika tidak ada data duplikat, lakukan insert
-                    String sql = "INSERT INTO data_manager (id, kode_matkul, nama_matkul, semester, sks, nilai, status, nim) VALUES ('"
-                    + id + "', '"
+                    String sql = "INSERT INTO data_manager (nomor, kode_matkul, nama_matkul, semester, sks, nilai, status, nim) VALUES ('"
+                    + nomor + "', '"
                     + kode + "', '"
                     + nama_matkul + "', '"
                     + semester + "', '"
@@ -446,7 +510,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_Btn_saveActionPerformed
 
     private void Btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_updateActionPerformed
-        String id = Tf_id.getText();
+        String nomor = Tf_nomor.getText();
         String kode = Tf_kode.getText();
         String nama_matkul = Tf_nama_matkul.getText();
         String semester = Tf_semester.getText();
@@ -454,13 +518,13 @@ public class Manager extends javax.swing.JFrame {
         String nilai = Tf_nilai.getText();
         String status = Tf_status.getText();
 
-        if (id.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty()) {
+        if (nomor.isEmpty() || kode.isEmpty() || nama_matkul.isEmpty() || semester.isEmpty()|| sks.isEmpty() || nilai.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong untuk memperbarui data!");
         } else {
             try {
-                String sql = "UPDATE data_manager SET nim = '" + nim
-                + "', id = '" + id
-                + "', semster = '" + semester
+                String sql = "UPDATE data_manager SET kode_matkul = '" + kode
+                + "', nomor = '" + nomor
+                + "', semester = '" + semester
                 + "', sks = '" + sks
                 + "', nilai = '" + nilai
                 + "', status = '" + status
@@ -515,7 +579,7 @@ public class Manager extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Silakan pilih data di tabel terlebih dahulu!");
         } else {
             // Ambil data dari tabel berdasarkan indeks kolom
-            String id = jTable1.getValueAt(selectedRow, 0).toString();
+            String nomor = jTable1.getValueAt(selectedRow, 0).toString();
             String kode = jTable1.getValueAt(selectedRow, 1).toString();
             String nama_matkul = jTable1.getValueAt(selectedRow, 2).toString();
             String semester = jTable1.getValueAt(selectedRow, 3).toString();
@@ -524,7 +588,7 @@ public class Manager extends javax.swing.JFrame {
             String status = jTable1.getValueAt(selectedRow, 6).toString();
 
             // Set data ke text field
-            Tf_id.setText(id);
+            Tf_nomor.setText(nomor);
             Tf_nama_matkul.setText(nama_matkul);
             Tf_semester.setText(semester);
             Tf_sks.setText(sks);
@@ -538,6 +602,96 @@ public class Manager extends javax.swing.JFrame {
         Btn_save.setEnabled(false);
     }//GEN-LAST:event_Btn_selectActionPerformed
 
+    private void Btn_GenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_GenerateActionPerformed
+        // Membuat kode random
+        String kodeRandom = generateRandomCode(8); // Panjang kode random: 8 karakter
+        // Menampilkan kode random di field Tf_kode_matkul
+        Tf_kode.setText(kodeRandom);
+    }//GEN-LAST:event_Btn_GenerateActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        if(jComboBox1.getSelectedItem().equals("S1")){
+            Tf_semester.setText("Semester 1");
+        }else if(jComboBox1.getSelectedItem().equals("S2")){
+            Tf_semester.setText("Semester 2");
+        }else if(jComboBox1.getSelectedItem().equals("S3")){
+            Tf_semester.setText("Semester 3");
+        }else if(jComboBox1.getSelectedItem().equals("S4")){
+            Tf_semester.setText("Semester 4");
+        }else if(jComboBox1.getSelectedItem().equals("S5")){
+            Tf_semester.setText("Semester 5");
+        }else if(jComboBox1.getSelectedItem().equals("S6")){
+            Tf_semester.setText("Semester 6");
+        }else if(jComboBox1.getSelectedItem().equals("S7")){
+            Tf_semester.setText("Semester 7");
+        }else if(jComboBox1.getSelectedItem().equals("S8")){
+            Tf_semester.setText("Semester 8");
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        if(jComboBox2.getSelectedItem().equals("1")){
+            Tf_sks.setText("1SKS");
+        }else if(jComboBox2.getSelectedItem().equals("2")){
+            Tf_sks.setText("2SKS");
+        }else if(jComboBox2.getSelectedItem().equals("3")){
+            Tf_sks.setText("3SKS");
+        }else if(jComboBox2.getSelectedItem().equals("4")){
+            Tf_sks.setText("4SKS");
+        }else if(jComboBox2.getSelectedItem().equals("5")){
+            Tf_sks.setText("5SKS");
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        if(jComboBox3.getSelectedItem().equals("A")){
+            Tf_nilai.setText("A");
+        }else if(jComboBox3.getSelectedItem().equals("A+")){
+            Tf_nilai.setText("A+");
+        }else if(jComboBox3.getSelectedItem().equals("A-")){
+            Tf_nilai.setText("A-");
+        }else if(jComboBox3.getSelectedItem().equals("B")){
+            Tf_nilai.setText("B");
+        }else if(jComboBox3.getSelectedItem().equals("B+")){
+            Tf_nilai.setText("B+");
+        }else if(jComboBox3.getSelectedItem().equals("B-")){
+            Tf_nilai.setText("B-");
+        }else if(jComboBox3.getSelectedItem().equals("C")){
+            Tf_nilai.setText("C");
+        }else if(jComboBox3.getSelectedItem().equals("C+")){
+            Tf_nilai.setText("C+");
+        }else if(jComboBox3.getSelectedItem().equals("C-")){
+            Tf_nilai.setText("C-");
+        }else if(jComboBox3.getSelectedItem().equals("D")){
+            Tf_nilai.setText("D");
+        }else if(jComboBox3.getSelectedItem().equals("D+")){
+            Tf_nilai.setText("D+");
+        }else if(jComboBox3.getSelectedItem().equals("D-")){
+            Tf_nilai.setText("D-");
+        }else if(jComboBox3.getSelectedItem().equals("E")){
+            Tf_nilai.setText("E");
+        }
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        if(jComboBox4.getSelectedItem().equals("LULUS")){
+            Tf_status.setText("LULUS");
+        }else if(jComboBox4.getSelectedItem().equals("TIDAK LULUS")){
+            Tf_status.setText("TIDAK LULUS");
+        }
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    // Fungsi untuk menghasilkan kode random
+    private String generateRandomCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            code.append(characters.charAt(index));
+        }
+        return code.toString();
+    }
     /**
      * @param args the command line arguments
      */
@@ -578,21 +732,26 @@ public class Manager extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btn_Generate;
     private javax.swing.JButton Btn_delete;
     private javax.swing.JButton Btn_reset;
     private javax.swing.JButton Btn_save;
     private javax.swing.JButton Btn_select;
     private javax.swing.JButton Btn_update;
-    private javax.swing.JTextField Tf_id;
     private javax.swing.JTextField Tf_kode;
     private javax.swing.JTextField Tf_nama_matkul;
     private javax.swing.JTextField Tf_nilai;
+    private javax.swing.JTextField Tf_nomor;
     private javax.swing.JTextField Tf_semester;
     private javax.swing.JTextField Tf_sks;
     private javax.swing.JTextField Tf_status;
     private javax.swing.JButton btn_dashboard;
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_manager1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
