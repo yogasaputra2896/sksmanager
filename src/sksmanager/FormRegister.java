@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class FormRegister extends javax.swing.JFrame {
-
-    private Connection con;
-    
+    // variable konstanta
+    private final Connection con;
+    // Funsi FormRegister
     public FormRegister() {
         initComponents();
         setLocationRelativeTo(null);
@@ -22,7 +22,8 @@ public class FormRegister extends javax.swing.JFrame {
             System.exit(0); // Keluar jika koneksi gagal
         }
     }
-
+     
+    // Fungsi Register
      private void register() {
         String nimm = tf_nim.getText().trim();
         String password = new String(tf_pass.getPassword()).trim();

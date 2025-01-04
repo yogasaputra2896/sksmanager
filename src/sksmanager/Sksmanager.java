@@ -13,11 +13,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
 public class Sksmanager {
-
+    // Inisialisasi Object
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
 
+    // Fungsi Koneksi
     public static Connection getConnection() {
         con = null;
         stmt = null;
@@ -30,7 +31,8 @@ public class Sksmanager {
         }
         return con;
     }
-
+    
+    // Fungsi Diskoneksi
     public static void closeConnection() {
         try {
             if (rs != null) rs.close();
