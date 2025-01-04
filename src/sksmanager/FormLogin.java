@@ -12,12 +12,14 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class FormLogin extends javax.swing.JFrame {
-    
+    // Variable Global
     public static String userNIM;
+    // Inisialisasi Object
     Connection con;
     Statement stmt;
     ResultSet rs;
 
+    // Fungsi FormLogin
     public FormLogin() {
         initComponents();
         setLocationRelativeTo(null);
@@ -27,7 +29,8 @@ public class FormLogin extends javax.swing.JFrame {
             System.exit(0); // Keluar jika koneksi gagal
         }
     }
-
+    
+    //Fungsi Login
     private void login() {
         userNIM = tf_nim.getText().trim();
         String password = new String(tf_pass.getPassword()).trim();
