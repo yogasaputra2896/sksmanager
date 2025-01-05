@@ -102,6 +102,7 @@ public class FormRegister extends javax.swing.JFrame {
         setBackground(new java.awt.Color(204, 204, 204));
         setName("frmLogin"); // NOI18N
         setResizable(false);
+        setSize(new java.awt.Dimension(934, 521));
 
         panel_logo.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -311,13 +312,12 @@ public class FormRegister extends javax.swing.JFrame {
                                 .addGap(5, 5, 5)))
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tf_sks, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tf_fakultas, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                                .addComponent(tf_mahasiswa)
-                                .addComponent(tf_kampus)
-                                .addComponent(tf_nim)
-                                .addComponent(tf_pass)
-                                .addComponent(tf_confirmPass, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                            .addComponent(tf_fakultas)
+                            .addComponent(tf_mahasiswa)
+                            .addComponent(tf_kampus)
+                            .addComponent(tf_nim)
+                            .addComponent(tf_pass)
+                            .addComponent(tf_confirmPass, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(144, 144, 144))
         );
         panel1Layout.setVerticalGroup(
@@ -368,8 +368,8 @@ public class FormRegister extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
