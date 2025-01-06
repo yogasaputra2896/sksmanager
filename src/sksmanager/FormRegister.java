@@ -7,6 +7,7 @@ package sksmanager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class FormRegister extends javax.swing.JFrame {
@@ -16,6 +17,8 @@ public class FormRegister extends javax.swing.JFrame {
     public FormRegister() {
         initComponents();
         setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/sksmanager/image/logo.png");
+        setIconImage(icon.getImage());
         con = Sksmanager.getConnection();
         if (con == null) {
             JOptionPane.showMessageDialog(this, "Koneksi database gagal!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -100,8 +103,11 @@ public class FormRegister extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SKS MANAGER | REGISTER");
         setBackground(new java.awt.Color(204, 204, 204));
+        setMaximumSize(null);
         setName("frmLogin"); // NOI18N
+        setPreferredSize(null);
         setResizable(false);
+        setSize(new java.awt.Dimension(944, 520));
 
         panel_logo.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -121,9 +127,7 @@ public class FormRegister extends javax.swing.JFrame {
         );
         panel_logoLayout.setVerticalGroup(
             panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_logoLayout.createSequentialGroup()
-                .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(logo, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
         );
 
         logo.getAccessibleContext().setAccessibleName("");
@@ -311,13 +315,12 @@ public class FormRegister extends javax.swing.JFrame {
                                 .addGap(5, 5, 5)))
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tf_sks, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tf_fakultas, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                                .addComponent(tf_mahasiswa)
-                                .addComponent(tf_kampus)
-                                .addComponent(tf_nim)
-                                .addComponent(tf_pass)
-                                .addComponent(tf_confirmPass, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                            .addComponent(tf_fakultas)
+                            .addComponent(tf_mahasiswa)
+                            .addComponent(tf_kampus)
+                            .addComponent(tf_nim)
+                            .addComponent(tf_pass)
+                            .addComponent(tf_confirmPass, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(144, 144, 144))
         );
         panel1Layout.setVerticalGroup(
@@ -368,18 +371,17 @@ public class FormRegister extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
