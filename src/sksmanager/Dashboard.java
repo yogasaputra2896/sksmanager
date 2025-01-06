@@ -76,7 +76,7 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("src/sksmanager/image/logo.png");
+        ImageIcon icon = new ImageIcon("D:/New Folder/sksmanager/src/sksmanager/image/logo.png");
         setIconImage(icon.getImage());
         con = Sksmanager.getConnection();
         if (con == null) {
@@ -127,7 +127,6 @@ public class Dashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SKS MANAGER | DASHBOARD");
         setMaximumSize(null);
-        setPreferredSize(new java.awt.Dimension(990, 654));
         setResizable(false);
         setSize(new java.awt.Dimension(990, 654));
 

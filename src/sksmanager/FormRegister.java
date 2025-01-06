@@ -17,7 +17,7 @@ public class FormRegister extends javax.swing.JFrame {
     public FormRegister() {
         initComponents();
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("src/sksmanager/image/logo.png");
+        ImageIcon icon = new ImageIcon("D:/New Folder/sksmanager/src/sksmanager/image/logo.png");
         setIconImage(icon.getImage());
         con = Sksmanager.getConnection();
         if (con == null) {
